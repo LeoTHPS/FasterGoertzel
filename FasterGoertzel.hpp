@@ -89,6 +89,9 @@ private:
 	template<typename T, size_t S, size_t ... I>
 	static constexpr void Calculate(const T* buffer, size_t size, uint32_t sample_rate, uint32_t channel, uint32_t channel_count, const double(&frequency)[S], double(&value)[S], std::index_sequence<I ...>)
 	{
+		static_assert(S == sizeof...(I));
+		static_assert(std::is_integral<T>::value);
+
 		double q[3][S]  = {};
 		double coeff[S] = { (Math::Cos((frequency[I] * Math::PI * 2) / sample_rate) * 2) ... };
 
